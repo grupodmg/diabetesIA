@@ -1,18 +1,15 @@
 import pickle
-from fastapi import FastAPI
+from fastapi import FastAPI, APIRouter
 import numpy as np
 
 from interfaces import DiabetesData
 
 app = FastAPI()
 
+router = APIRouter()
+
 with open("RFDiabetesv132.pkl", "rb") as file:
     model = pickle.load(file)
-
-@app.get("/")
-def index():
-    return {"message": "API2 RUNNING"}
-
 
 @app.post("/predict")
 def predict(data:DiabetesData):
