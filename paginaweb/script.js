@@ -74,47 +74,19 @@ class DiabetesForm extends HTMLElement {
         }
 
         try {
-            const response = await fetch('https://diabetesia.onrender.com/predict', {
+            const response = await fetch('https://diabetesia.onrender.com/predict', { // Reemplaza con tu URL
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(data),
             });
-        
+
             const result = await response.json();
-            const resultDiv = this.shadowRoot.querySelector('#result');
-        
-            // Extraer el mensaje de la respuesta
-            const message = result.message ? result.message[0] : 'Error desconocido';
-        
-            // Actualizar el contenido y estilo del resultado según el mensaje
-            if (message === 'Diabetes') {
-                resultDiv.textContent = 'El paciente tiene diabetes.';
-                resultDiv.style.color = '#ffffff';
-                resultDiv.style.backgroundColor = '#ff4d4d'; // Rojo
-            } else if (message === 'No Diabetes') {
-                resultDiv.textContent = 'El paciente no tiene diabetes.';
-                resultDiv.style.color = '#ffffff';
-                resultDiv.style.backgroundColor = '#4caf50'; // Verde
-            } else {
-                resultDiv.textContent = 'Resultado no reconocido: ' + message;
-                resultDiv.style.color = '#ffffff';
-                resultDiv.style.backgroundColor = '#ffa500'; // Naranja
-            }
-        
-            // Aplicar estilos comunes
-            resultDiv.style.padding = '10px';
-            resultDiv.style.borderRadius = '5px';
-            resultDiv.style.textAlign = 'center';
+            this.shadowRoot.querySelector('#result').textContent = 
+                result.hasDiabetes ? 'El paciente tiene diabetes.' : 'El paciente no tiene diabetes.';
         } catch (error) {
-            const resultDiv = this.shadowRoot.querySelector('#result');
-            resultDiv.textContent = 'Error al procesar la solicitud.';
-            resultDiv.style.color = '#ffffff';
-            resultDiv.style.backgroundColor = '#ff4d4d'; // Rojo
-            resultDiv.style.padding = '10px';
-            resultDiv.style.borderRadius = '5px';
-            resultDiv.style.textAlign = 'center';
+            this.shadowRoot.querySelector('#result').textContent = 'Error al procesar la solicitud.';
             console.error(error);
         }
     }
